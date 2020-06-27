@@ -8,6 +8,26 @@ RoomCapacity = collections.namedtuple("RoomCapacity", "name capacity")
 Student = collections.namedtuple("Student", "firstname lastname matrikel")
 
 
+def distinct_prefix(s1: str, s2: str) -> str:
+    '''
+    Determines a distinct prefix to tell
+    s1 apart from s2.
+    s1: the first string.
+    s2: the second string.
+    returns: the common prefix of s1 and s2
+                plus one letter to tell them apart from each other.
+    '''
+    if len(s1) == 0:
+        return ""
+
+    prefix = s1[0]
+    i = 0
+    while i < len(s1) - 1 and s1[i] == s2[i]:
+        i += 1
+        prefix += s1[i]
+    return prefix
+
+
 class RoomUsage(object):
     def __init__(self, name: str, capacity: int, students: List[Student]):
         self.name = name
@@ -38,10 +58,10 @@ class RoomUsage(object):
     @property
     def room_sign(self):
         ''' Creates the room sign '''
-        return "%s – %s" % (_distinct_prefix(self.students[0].lastname,
+        return "%s – %s" % (distinct_prefix(self.students[0].lastname,
                                              self.students[1].lastname),
-                            _distinct_prefix(self.students[-2].lastname,
-                                             self.students[-1].lastname))
+                            distinct_prefix(self.students[-1].lastname,
+                                             self.students[-2].lastname))
 
     def pop_front_student(self) -> Student:
         '''

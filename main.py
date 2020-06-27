@@ -1,22 +1,28 @@
 import sys
-from planning import RoomPlanner, RoomUsage
+import planning
+import markdeep as md
 import util
-from markdeep import MarkdeepDocument, generate_student_list
 
 
 DEBUG = True
 
 
-def print_attendence_list(room: RoomUsage):
-    md = MarkdeepDocument()
-    md.append("# Raum %s\n" % (room.name,))
-    md.append(generate_student_list(room.students))
-    md.to_file("room_%s.md.html" % (room.name,))
+def print_attendence_list(room: planning.RoomUsage):
+    doc = md.MarkdeepDocument()
+
+    i = 0
+    step = 20
+    while i < len(room.students):
+        doc.append("\n# Raum %s – %s (%d/%d)\n" % (room.name, room.room_sign, room.usage, room.capacity))
+        doc.append("\n\n" + md.generate_student_list(room.students[i:(i + step)]))
+        doc.append("\n+++++")
+        i += step
+    doc.to_file("room_%s.md.html" % (room.name,))
 
 
 def main(args):
     rooms = util.load_room_infos("rooms.csv")
-    planner = RoomPlanner(rooms)
+    planner = planning.RoomPlanner(rooms)
     students = util.generate_mock_students(200) if DEBUG else util.load_students("students.csv")
     seats = util.load_available_rooms("available_rooms.csv")
 

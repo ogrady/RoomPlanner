@@ -17,7 +17,7 @@ Auditorium, 60, 70
 ```
 
 ## available_rooms.csv
-The rooms that are actually available for the exam. Should be a subset of what was specified in `rooms.csv`. The format is the name of the room, followed by `1` or `2` two denote, which capacity whould be used.
+The rooms that are actually available for the exam. Should be a subset of what was specified in `rooms.csv`. The format is the name of the room, followed by `1` or `2` to denote, which capacity should be used.
 
 Example:
 

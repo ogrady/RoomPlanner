@@ -62,15 +62,15 @@ class RoomUsage(object):
         return self.usage * 100 / self.capacity
 
     @property
-    def room_sign(self):
-        ''' Creates the room sign '''
+    def name_range(self) -> Tuple[str, str]:
+        ''' distinct start and end prefix of students in this room '''
         start = (self.students[0].lastname[0]
                  if self.previous is None or self.previous.is_empty()
                  else distinct_prefix(self.students[0].lastname, self.previous.students[-1].lastname))
         end = (distinct_prefix(self.students[-1].lastname, self.students[-2].lastname)
                if self.previous is None or self.next.is_empty()
                else distinct_prefix(self.students[-1].lastname, self.next.students[0].lastname))
-        return "%s – %s" % (start, end)
+        return (start, end)
 
     @property
     def previous(self):

@@ -13,11 +13,24 @@ def print_attendence_list(room: planning.RoomUsage):
     i = 0
     step = 20
     while i < len(room.students):
-        doc.append("\n# Raum %s – %s (%d/%d)\n" % (room.name, room.room_sign, room.usage, room.capacity))
+        start, end = room.name_range
+        doc.append("\n# Raum %s. %s – %s (%d/%d)\n" % (room.name, start, end, room.usage, room.capacity))
         doc.append("\n\n" + md.generate_student_list(room.students[i:(i + step)]))
         doc.append("\n+++++")
         i += step
     doc.to_file("output/%d_room_%s.md.html" % (room.id, room.name,))
+
+
+def print_room_signs(room: planning.RoomUsage, title, date, start_time, end_time):
+    doc = md.MarkdeepDocument(slides=True)
+    doc.append("\n# %s" % (title,))
+    doc.append("\n<center>")
+    doc.append("\n<p>%s, %s – %s Uhr</p>" % (date, start_time, end_time))
+    doc.append("\n<p>%s</p>" % (room.name,))
+    doc.append("\n<p>**Bitte nicht stören**</p>")
+    doc.append("\n</center>")
+    doc.append("\n## Namen: %s – %s" % room.name_range)
+    doc.to_file("output/%d_door_%s.md.html" % (room.id, room.name,))
 
 
 def main(args):
@@ -28,8 +41,9 @@ def main(args):
 
     distribution = planner.plan(seats, students)
 
-    for d in distribution:
-        print_attendence_list(d)
+    for room in distribution:
+        print_attendence_list(room)
+        print_room_signs(room, "Hauptklausur Informatik 2", "31.07.2020", "14:00", "16:00")
 
 
 if __name__ == "__main__":

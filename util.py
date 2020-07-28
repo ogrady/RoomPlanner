@@ -40,7 +40,7 @@ def load_room_infos(file) -> List[planning.RoomInfo]:
 
 
 def load_students(file) -> List[planning.Student]:
-    return load_file(file, CSV_SEPARATOR, lambda ts: planning.Student(firstname=ts[0], lastname=ts[1], matrikel=ts[2]))
+    return load_file(file, CSV_SEPARATOR, lambda ts: planning.Student(lastname=ts[0], firstname=ts[1], matrikel=ts[2]))
 
 
 def load_available_rooms(file) -> List[Tuple[str, int]]:

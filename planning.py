@@ -29,10 +29,16 @@ def distinct_prefix(s1: str, s2: str) -> str:
 
 
 class RoomUsage(object):
+    NEXT_ID = 1
+
     def __init__(self, name: str, capacity: int, students: List[Student]):
         self.name = name
         self.capacity = capacity
         self.students = students
+        self._previous = None
+        self._next = None
+        self.id = RoomUsage.NEXT_ID
+        RoomUsage.NEXT_ID += 1
 
     def __str__(self):
         return "%s %d/%d (%d%%)" % (self.name, self.usage, self.capacity, self.percentage)
@@ -58,10 +64,33 @@ class RoomUsage(object):
     @property
     def room_sign(self):
         ''' Creates the room sign '''
-        return "%s – %s" % (distinct_prefix(self.students[0].lastname,
-                                             self.students[1].lastname),
-                            distinct_prefix(self.students[-1].lastname,
-                                             self.students[-2].lastname))
+        start = (self.students[0].lastname[0]
+                 if self.previous is None or self.previous.is_empty()
+                 else distinct_prefix(self.students[0].lastname, self.previous.students[-1].lastname))
+        end = (distinct_prefix(self.students[-1].lastname, self.students[-2].lastname)
+               if self.previous is None or self.next.is_empty()
+               else distinct_prefix(self.students[-1].lastname, self.next.students[0].lastname))
+        return "%s – %s" % (start, end)
+
+    @property
+    def previous(self):
+        ''' previous room in alphabetical order of students '''
+        return self._previous
+
+    @property
+    def next(self):
+        ''' next room in alphabetical order of students '''
+        return self._next
+
+    @previous.setter
+    def previous(self, prev: RoomUsage):
+        self._previous = prev
+        if prev is not None:
+            prev._next = self
+
+    def is_empty(self) -> bool:
+        ''' checks, if the room is empty '''
+        return len(self.students) == 0
 
     def pop_front_student(self) -> Student:
         '''
@@ -184,10 +213,19 @@ class RoomPlanner(object):
         used_rooms = []
 
         i = 0
+        total_capacity = 0
+        last = None
         for room_name, capacity in rooms:
             room_students = students[i:(i + capacity)]
             i += capacity
-            used_rooms.append(RoomUsage(room_name, capacity, room_students))
+            ru = RoomUsage(room_name, capacity, room_students)
+            ru.previous = last
+            used_rooms.append(ru)
+            last = ru
+            total_capacity += capacity
+
+        if i < len(students):
+            raise Exception("not enough capacity to distribute %d students" % (i,))
 
         return [r for r in used_rooms if len(r.students) > 0]
 

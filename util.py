@@ -19,11 +19,7 @@ def generate_mock_students(length: int) -> List[planning.Student]:
              "Langdon", "Lawrence", "Lee", "Lewis", "Lyman", "MacDonald",
              "Mackay", "Mackenzie", "MacLeod", "Manning", "Marshall", "Martin", "Mathis", "May", "McDonald", "McLean", "McGrath", "Metcalfe", "Miller", "Mills", "Mitchell", "Morgan", "Morrison", "Murray", "Nash", "Newman", "Nolan", "North", "Ogden", "Oliver", "Paige", "Parr", "Parsons", "Paterson", "Payne", "Peake", "Peters", "Piper", "Poole", "Powell", "Pullman", "Quinn", "Rampling", "Randall", "Rees", "Reid", "Roberts", "Robertson", "Ross", "Russell", "Rutherford", "Sanderson", "Scott", "Sharp", "Short", "Simpson", "Skinner", "Slater", "Smith", "Springer", "Stewart", "Sutherland", "Taylor", "Terry", "Thomson", "Tucker", "Turner", "Underwood", "Vance", "Vaughan", "Walker", "Wallace", "Walsh", "Watson", "Welch", "White", "Wilkins", "Wilson", "Wright", "Young")
 
-    students = []
-    for i in range(length):
-        students.append(
-            planning.Student(names[i % len(names)], names[i % len(names)], 123456))
-    return students
+    return [planning.Student(names[i % len(names)], names[i % len(names)], 123456) for i in range(length)]
 
 
 def load_file(file, separator, consumer):

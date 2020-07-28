@@ -15,10 +15,6 @@ SIGN_HEADER = "      Unterschrift      "
 COMMENT_HEADER = "      Anmerkung       "
 
 
-def generate_room_signs():
-    pass
-
-
 def generate_student_list(students: List[planning.Student]) -> str:
     firstname_length = max([len(s.firstname) for s in students] + [len(FIRSTNAME_HEADER)])
     lastname_length = max([len(s.lastname) for s in students] + [len(LASTNAME_HEADER)])

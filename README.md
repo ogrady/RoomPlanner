@@ -36,3 +36,17 @@ Foo, Bar, 123456
 Alice, Smith, 234567
 Bob, Miller, 345678
 ```
+
+## config.json
+Additional information needed to generate the door signs.
+
+```
+{
+	"exam_info": {
+		"title": "Main Exam Math III",
+		"date": "20.04.2020",
+		"start": "16:00",
+		"end": "17:00"
+	}
+}
+```

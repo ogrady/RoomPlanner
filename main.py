@@ -4,7 +4,7 @@ import markdeep as md
 import util
 
 
-DEBUG = True
+DEBUG = False
 
 
 def print_attendence_list(room: planning.RoomUsage):
@@ -17,13 +17,13 @@ def print_attendence_list(room: planning.RoomUsage):
         doc.append("\n\n" + md.generate_student_list(room.students[i:(i + step)]))
         doc.append("\n+++++")
         i += step
-    doc.to_file("room_%s.md.html" % (room.name,))
+    doc.to_file("output/%d_room_%s.md.html" % (room.id, room.name,))
 
 
 def main(args):
     rooms = util.load_room_infos("rooms.csv")
     planner = planning.RoomPlanner(rooms)
-    students = util.generate_mock_students(200) if DEBUG else util.load_students("students.csv")
+    students = util.generate_mock_students(364) if DEBUG else util.load_students("students.csv")
     seats = util.load_available_rooms("available_rooms.csv")
 
     distribution = planner.plan(seats, students)
